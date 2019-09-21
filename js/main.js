@@ -26,12 +26,17 @@ var app = new Vue({
     },
     methods: {
         addToCart: function () {
-            this.cart += 1
+            if (this.inventory >= 1) {
+                this.cart += 1
+                this.inventory -=1
+            }            
         },
 
         removeFromCart: function () {
-            if (this.cart > 0)
+            if (this.cart > 0) {
                 this.cart -= 1
+                this.inventory +=1
+            }
         },
 
         updateProduct: function (variantImage) {

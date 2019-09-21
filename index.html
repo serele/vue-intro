@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">    
-    <title>Document</title>
+    <title>Product App</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -21,15 +21,19 @@
                 <h1>{{ product }}</h1> 
                 <p v-if="inventory > 10">In Stock</p>
                 <p v-else-if="inventory <= 10 && inventory > 0">Almost sold out!</p>
-                <p v-else>Out of Stock</p>
+                <p v-else :class="{ outOfStock: inventory == 0 }">Out of Stock</p>
                 <p v-show="onSale == true">On Sale!</p>
 
                 <ul>
                     <li v-for="detail in details">{{ detail }}</li>                    
                 </ul>
 
-                <div v-for="variant in variants" :key="variant.variantId">
-                    <p @mouseover="updateProduct(variant.variantImage)">{{ variant.variantColor }}</p>                    
+                <div v-for="variant in variants" 
+                    :key="variant.variantId"
+                    class="color-box"
+                    :style="{ backgroundColor: variant.variantColor }"
+                    @mouseover="updateProduct(variant.variantImage)">
+
                 </div>
                 
                 <p>SIZES:</p>
@@ -37,8 +41,13 @@
                     <li v-for="size in sizes">{{ size }}</li>
                 </ul>
 
-                <button v-on:click="addToCart">Add to Cart</button>
-                <button v-on:click="removeFromCart">Remove from Cart</button>
+                <button v-on:click="addToCart" 
+                    :disabled="inventory == 0"
+                    :class="{ disabledButton: inventory == 0 }">Add to Cart</button>
+
+                <button v-on:click="removeFromCart" 
+                    :disabled="cart == 0"
+                    :class="{ disabledButton: cart == 0 }">Remove from Cart</button>
 
                 <div class="cart">
                     <p>Cart({{cart}})</p>
